@@ -6,7 +6,7 @@ Current PyInstaller version used: 3.2.
 
 ## Tags
 
-`cdrx/pyinstaller-linux` has two tags, `:python2` and `:python3` which you can use depending on the requirements of your Project. `:latest` points to `:python3`
+`cdrx/pyinstaller-linux` has two tags, `:python2` and `:python3` which you can use depending on the requirements of your project. `:latest` points to `:python3`
 
 `cdrx/pyinstaller-windows` currently only has a `:python2` tag because the Python 3.5 Windows installer doesn't work under Wine (yet).
 
