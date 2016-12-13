@@ -6,9 +6,9 @@ Current PyInstaller version used: 3.2.
 
 ## Tags
 
-`cdrx/pyinstaller-linux` has two tags, `:python2` and `:python3` which you can use depending on the requirements of your project. `:latest` points to `:python3`
+`cdrx/pyinstaller-linux` and `cdrx/pyinstaller-windows` both have two tags, `:python2` and `:python3` which you can use depending on the requirements of your project. `:latest` points to `:python3`
 
-`cdrx/pyinstaller-windows` currently only has a `:python2` tag because the Python 3.5 Windows installer doesn't work under Wine (yet).
+The `:python2` tags run Python 2.7. The `:python3` tag on Linux runs Python 3.5. On Windows, `:python3` uses Python 3.4.4 as that is the most recent version that has an installer that runs under Wine. 
 
 ## Usage
 
@@ -50,12 +50,15 @@ Add `pyinstaller=3.1.1` to your `requirements.txt`.
 
 ## Known Issues
 
-There is currently no `cdrx/pyinstaller-windows:python3` image because the Python 3.5 installer doesn't work under Wine. The `cdrx/pyinstaller-windows:python2` tag works.
+`cdrx/pyinstaller-windows:python3` has a different Python version to `cdrx/pyinstaller-linux:python3` (3.4) because the Python 3.5 installer doesn't run correctly under Wine. 
 
 ## History
 
 #### [1.0] - 2016-08-26
 First release, works.
+
+#### [1.1] - 2016-12-13
+Added Python 3.4 on Windows, thanks to @bmustiata
 
 ## License
 
