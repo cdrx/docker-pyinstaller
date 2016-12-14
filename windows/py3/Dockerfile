@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 ENV DEBIAN_FRONTEND noninteractive
 
 ARG WINE_VERSION=winehq-devel
-ARG PYTHON_VERSION=3.4.4
+ARG PYTHON_VERSION=3.5.2
 ARG PYINSTALLER_VERSION=3.2
 
 # we need wine for this all to work, so we'll use the PPA
@@ -21,22 +21,24 @@ ENV WINEARCH win32
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
-# install python inside wine
+# install python in wine, using the embedded version
 RUN set -x \
-    && wget -nv https://www.python.org/ftp/python/$PYTHON_VERSION/python-$PYTHON_VERSION.msi \
-    && wine msiexec /qn /a python-$PYTHON_VERSION.msi \
-    && rm python-$PYTHON_VERSION.msi \
-    && sed -i 's/_windows_cert_stores = .*/_windows_cert_stores = ("ROOT",)/' "/wine/drive_c/Python34/Lib/ssl.py" \
-    && echo 'wine '\''C:\Python34\python.exe'\'' "$@"' > /usr/bin/python \
-    && echo 'wine '\''C:\Python34\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
-    && echo 'wine '\''C:\Python34\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
-    && echo 'wine '\''C:\Python34\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
-    && chmod +x /usr/bin/* \
-    && wget https://bootstrap.pypa.io/ez_setup.py -O - | /usr/bin/python \
+    && winetricks win7 \
+    && for msifile in `echo core dev exe lib pip tcltk tools`; do \
+        wget -nv "https://www.python.org/ftp/python/3.5.2/win32/${msifile}.msi"; \
+        wine msiexec /a "${msifile}.msi" /qb TARGETDIR=C:/Python35; \
+        rm ${msifile}.msi; \
+    done \
+    && cd /wine/drive_c/Python35 \
+    && echo 'wine '\''C:\Python35\python.exe'\'' "$@"' > /usr/bin/python \
+    && echo 'wine '\''C:\Python35\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
+    && echo 'wine '\''C:\Python35\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
+    && echo 'wine '\''C:\Python35\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
     && (pip install -U pip || true) \
     && echo 'assoc .py=PythonScript' | wine cmd \
-    && echo 'ftype PythonScript=c:\Python34\python.exe "%1" %*' | wine cmd \
+    && echo 'ftype PythonScript=c:\Python35\python.exe "%1" %*' | wine cmd \
     && while pgrep wineserver >/dev/null; do echo "Waiting for wineserver"; sleep 1; done \
+    && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller \
     && rm -rf /tmp/.wine-*
 
 # install pyinstaller
