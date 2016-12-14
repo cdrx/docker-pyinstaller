@@ -26,7 +26,7 @@ ENV WINEPREFIX /wine
 RUN set -x \
     && winetricks win7 \
     && for msifile in `echo core dev exe lib pip tcltk tools`; do \
-        wget -nv "https://www.python.org/ftp/python/3.5.2/win32/${msifile}.msi"; \
+        wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/win32/${msifile}.msi"; \
         wine msiexec /a "${msifile}.msi" /qb TARGETDIR=C:/Python35; \
         rm ${msifile}.msi; \
     done \
