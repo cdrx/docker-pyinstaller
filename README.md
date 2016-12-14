@@ -62,7 +62,7 @@ First release, works.
 #### [1.1] - 2016-12-13
 Added Python 3.4 on Windows, thanks to @bmustiata
 
-#### [1.1] - 2016-12-13
+#### [1.2] - 2016-12-13
 Added Python 3.5 on Windows, thanks (again) to @bmustiata
 
 ## License
