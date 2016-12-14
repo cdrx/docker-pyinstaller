@@ -21,7 +21,8 @@ ENV WINEARCH win32
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
-# install python in wine, using the embedded version
+# install python in wine, using the msi packages to install, extracting
+# the files directly, since installing isn't running correctly.
 RUN set -x \
     && winetricks win7 \
     && for msifile in `echo core dev exe lib pip tcltk tools`; do \
