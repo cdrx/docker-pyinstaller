@@ -17,7 +17,7 @@ RUN set -x \
     && apt-get clean
 
 # wine settings
-ENV WINEARCH win32
+#ENV WINEARCH win32
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
@@ -26,7 +26,7 @@ ENV WINEPREFIX /wine
 RUN set -x \
     && winetricks win7 \
     && for msifile in `echo core dev exe lib pip tcltk tools`; do \
-        wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/win32/${msifile}.msi"; \
+        wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/amd64/${msifile}.msi"; \
         wine msiexec /a "${msifile}.msi" /qb TARGETDIR=C:/Python35; \
         rm ${msifile}.msi; \
     done \
