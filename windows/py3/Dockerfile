@@ -51,6 +51,8 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
-ENTRYPOINT if [ -f requirements.txt ]; then pip install -r requirements.txt; fi &&
-CMD ["pyinstaller", "--clean", "-y" ,"--dist" ,"./dist/windows", "--workpath", "/tmp" , "*.spec"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
