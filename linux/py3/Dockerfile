@@ -18,4 +18,6 @@ RUN mkdir /src/
 VOLUME /src/
 WORKDIR /src/
 
-CMD pip install -r requirements.txt && pyinstaller --clean -y --dist ./dist/linux --workpath /tmp *.spec
+ENTRYPOINT if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && pyinstaller
+CMD ["--clean", "-y" ,"--dist" ,"./dist/linux", "--workpath", "/tmp" , "*.spec"]
+
