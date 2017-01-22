@@ -21,6 +21,11 @@ ENV WINEARCH win32
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
+# PYPI repository location
+ENV PYPI_URL=https://pypi.python.org/
+# PYPI index location
+ENV PYPI_INDEX_URL=https://pypi.python.org/simple
+
 # install python inside wine
 RUN set -x \
     && wget -nv https://www.python.org/ftp/python/$PYTHON_VERSION/python-$PYTHON_VERSION.msi \
@@ -48,6 +53,8 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
-ENTRYPOINT if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && pyinstaller
-CMD ["--clean", "-y" ,"--dist" ,"./dist/windows", "--workpath", "/tmp" , "*.spec"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
