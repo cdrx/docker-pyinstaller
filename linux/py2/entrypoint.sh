@@ -12,7 +12,7 @@ if [[ "$PYPI_URL" != "https://pypi.python.org/" ]] || \
     # the funky looking regexp just extracts the hostname, excluding port
     # to be used as a trusted-host.
     mkdir -p /root/pip
-    echo "[global]" > /pip/pip.conf
+    echo "[global]" > /root/pip/pip.conf
     echo "index = $PYPI_URL" >> /root/pip/pip.conf
     echo "index-url = $PYPI_INDEX_URL" >> /root/pip/pip.conf
     echo "trusted-host = $(echo $PYPI_URL | perl -pe 's|^.*?://(.*?)(:.*?)?/.*$|$1|')" >> /root/pip/pip.conf
