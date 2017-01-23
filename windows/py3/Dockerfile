@@ -21,6 +21,19 @@ ENV WINEARCH win32
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
+# PYPI repository location
+ARG pypi_url=https://pypi.python.org/
+# PYPI index location
+ARG pypi_index_url=https://pypi.python.org/simple
+
+# the funky looking regexp just extracts the hostname, excluding port
+# to be used as a trusted-host.
+RUN mkdir -p /wine/drive_c/users/root/pip && \
+    echo "[global]" > /wine/drive_c/users/root/pip/pip.ini && \
+    echo "index = $pypi_url" >> /wine/drive_c/users/root/pip/pip.ini && \
+    echo "index-url = $pypi_index_url" >> /wine/drive_c/users/root/pip/pip.ini && \
+    echo "trusted-host = $(echo $pypi_url | perl -pe 's|^.*?://(.*?)(:.*?)?/.*$|$1|')" >> /wine/drive_c/users/root/pip/pip.ini
+
 # install python in wine, using the msi packages to install, extracting
 # the files directly, since installing isn't running correctly.
 RUN set -x \
@@ -51,5 +64,8 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
-CMD pip install -r requirements.txt && pyinstaller --clean -y --dist ./dist/windows --workpath /tmp *.spec
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
