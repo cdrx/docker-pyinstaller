@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG PYINSTALLER_VERSION=3.2
+ARG PYINSTALLER_VERSION=3.2.1
 
 # install python
 RUN set -x \
@@ -22,4 +22,3 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-
