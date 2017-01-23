@@ -2,7 +2,7 @@
 
 **cdrx/pyinstaller-linux** and **cdrx/pyinstaller-windows** are a pair of Docker containers to ease compiling Python applications to binaries / exe files.
 
-Current PyInstaller version used: 3.2.
+Current PyInstaller version used: 3.2.1.
 
 Current Python versions supported: 2.7 and 3.5.
 
@@ -50,6 +50,10 @@ Replace `wget` with the dependencies / package(s) you need to install.
 
 Add `pyinstaller=3.1.1` to your `requirements.txt`.
 
+##### Is it possible to use a package mirror?
+
+Yes, by supplying the `PYPI_URL` and `PYPI_INDEX_URL` environment variables that point to your PyPi mirror.
+
 ## Known Issues
 
 None
@@ -64,6 +68,13 @@ Added Python 3.4 on Windows, thanks to @bmustiata
 
 #### [1.2] - 2016-12-13
 Added Python 3.5 on Windows, thanks (again) to @bmustiata
+
+#### [1.3] - 2017-01-23
+Upgraded PyInstaller to version 3.2.1.
+Thanks to @bmustiata for contributing:
+ - Custom PyPi URLs
+ - No longer need to supply a requirements.txt file if your project doesn't need it
+ - PyInstaller can be called directly, for e.g to generate a spec file 
 
 ## License
 

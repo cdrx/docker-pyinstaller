@@ -10,6 +10,11 @@ RUN set -x \
     && apt-get install --no-install-recommends -qfy python3 python3-dev python3-pip python3-setuptools python3-wheel build-essential libmysqlclient-dev \
     && apt-get clean
 
+# PYPI repository location
+ENV PYPI_URL=https://pypi.python.org/
+# PYPI index location
+ENV PYPI_INDEX_URL=https://pypi.python.org/simple
+
 # install pyinstaller
 RUN pip3 install pyinstaller==$PYINSTALLER_VERSION
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
