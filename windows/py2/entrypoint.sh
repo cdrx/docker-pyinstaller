@@ -32,6 +32,6 @@ echo "$@"
 if [[ "$@" == "" ]]; then
     pyinstaller --clean -y --dist ./dist/windows --workpath /tmp *.spec
 else
-    $@
+    sh -c "$@"
 fi # [[ "$@" == "" ]]
 
