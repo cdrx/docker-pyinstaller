@@ -41,7 +41,7 @@ will build your PyInstaller project into `dist/linux/`. The binary will have the
 You'll need to supply a custom command to Docker to install system pacakges. Something like:
 
 ```
-docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux sh -c "apt-get update -y && apt-get install -y wget && pip install -r requirements.txt && pyinstaller --clean -y --dist ./dist/linux --workpath /tmp *.spec"
+docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "apt-get update -y && apt-get install -y wget && pip install -r requirements.txt && pyinstaller --clean -y --dist ./dist/linux --workpath /tmp *.spec"
 ```
 
 Replace `wget` with the dependencies / package(s) you need to install.
