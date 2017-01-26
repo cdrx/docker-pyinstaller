@@ -82,6 +82,9 @@ Thanks to @bmustiata for contributing:
  - No longer need to supply a requirements.txt file if your project doesn't need it
  - PyInstaller can be called directly, for e.g to generate a spec file 
 
+#### [1.4] - 2017-01-26
+Fixed bug with concatenated commands in entrypoint arguments, thanks to @alph4
+
 ## License
 
 MIT
