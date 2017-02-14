@@ -36,3 +36,7 @@ else
     sh -c "$@"
 fi # [[ "$@" == "" ]]
 
+if [[ "$PYINSTALLER_CHOWN" != "" ]]; then
+    chown -R $PYINSTALLER_CHOWN /src/dist/
+fi # [[ "$PYINSTALLER_CHOWN" != "" ]]
+

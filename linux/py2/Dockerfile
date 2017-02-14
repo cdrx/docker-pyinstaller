@@ -15,6 +15,9 @@ ENV PYPI_URL=https://pypi.python.org/
 # PYPI index location
 ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 
+# CHOWN flags
+ENV PYINSTALLER_CHOWN=""
+
 
 # install pyinstaller
 RUN pip install pyinstaller==$PYINSTALLER_VERSION

@@ -26,11 +26,14 @@ ENV PYPI_URL=https://pypi.python.org/
 # PYPI index location
 ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 
+# CHOWN flags
+ENV PYINSTALLER_CHOWN=""
+
 # install python inside wine
 RUN set -x \
     && wget -nv https://www.python.org/ftp/python/$PYTHON_VERSION/python-$PYTHON_VERSION.msi \
     && wine msiexec /qn /a python-$PYTHON_VERSION.msi \
-    && rm python-2.7.12.msi \
+    && rm python-$PYTHON_VERSION.msi \
     && sed -i 's/_windows_cert_stores = .*/_windows_cert_stores = ("ROOT",)/' "/wine/drive_c/Python27/Lib/ssl.py" \
     && echo 'wine '\''C:\Python27\python.exe'\'' "$@"' > /usr/bin/python \
     && echo 'wine '\''C:\Python27\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
