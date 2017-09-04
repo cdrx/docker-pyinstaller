@@ -7,7 +7,7 @@ ARG PYINSTALLER_VERSION=3.2.1
 # install python
 RUN set -x \
     && apt-get update -qy \
-    && apt-get install --no-install-recommends -qfy python python-dev python-pip python-setuptools build-essential libmysqlclient-dev \
+    && apt-get install --no-install-recommends -qfy python python-dev python-pip python-setuptools build-essential libmysqlclient-dev git \
     && apt-get clean
 
 # PYPI repository location
