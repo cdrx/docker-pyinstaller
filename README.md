@@ -2,7 +2,7 @@
 
 **cdrx/pyinstaller-linux** and **cdrx/pyinstaller-windows** are a pair of Docker containers to ease compiling Python applications to binaries / exe files.
 
-Current PyInstaller version used: 3.2.1.
+Current PyInstaller version used: 3.3.
 
 Current Python versions supported: 2.7 and 3.5.
 
@@ -50,7 +50,7 @@ Replace `wget` with the dependencies / package(s) you need to install.
 
 `docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux pyinstaller your-script.py`
 
-will generate a `spec` file for `your-script.py` in your current working directory. See the PyInstaller docs for more information. 
+will generate a `spec` file for `your-script.py` in your current working directory. See the PyInstaller docs for more information.
 
 ##### How do I change the PyInstaller version used?
 
@@ -80,10 +80,13 @@ Upgraded PyInstaller to version 3.2.1.
 Thanks to @bmustiata for contributing:
  - Custom PyPi URLs
  - No longer need to supply a requirements.txt file if your project doesn't need it
- - PyInstaller can be called directly, for e.g to generate a spec file 
+ - PyInstaller can be called directly, for e.g to generate a spec file
 
 #### [1.4] - 2017-01-26
 Fixed bug with concatenated commands in entrypoint arguments, thanks to @alph4
+
+#### [1.5] - 2017-09-29
+Changed the default PyInstaller version to 3.3
 
 ## License
 

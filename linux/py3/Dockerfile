@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG PYINSTALLER_VERSION=3.2.1
+ARG PYINSTALLER_VERSION=3.3
 
 # install python
 RUN set -x \
