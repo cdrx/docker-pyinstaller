@@ -4,13 +4,13 @@
 
 Current PyInstaller version used: 3.3.
 
-Current Python versions supported: 2.7 and 3.5.
-
 ## Tags
 
 `cdrx/pyinstaller-linux` and `cdrx/pyinstaller-windows` both have two tags, `:python2` and `:python3` which you can use depending on the requirements of your project. `:latest` points to `:python3`
 
-The `:python2` tags run Python 2.7. The `:python3` tag on Linux runs Python 3.5.
+The `:python2` tags run Python 2.7.
+
+The `:python3` tag runs Python 3.5 on Linux and Python 3.6 on Windows.
 
 ## Usage
 
@@ -87,6 +87,9 @@ Fixed bug with concatenated commands in entrypoint arguments, thanks to @alph4
 
 #### [1.5] - 2017-09-29
 Changed the default PyInstaller version to 3.3
+
+#### [1.6] - 2017-11-06
+Added Python 3.6 on Windows, thanks to @jameshilliard
 
 ## License
 
