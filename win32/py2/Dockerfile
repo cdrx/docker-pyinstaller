@@ -30,7 +30,7 @@ ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 RUN set -x \
     && wget -nv https://www.python.org/ftp/python/$PYTHON_VERSION/python-$PYTHON_VERSION.msi \
     && wine msiexec /qn /a python-$PYTHON_VERSION.msi \
-    && rm python-2.7.12.msi \
+    && rm python-$PYTHON_VERSION.msi \
     && wget -nv https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi \
     && wine msiexec /qn /a VCForPython27.msi \
     && rm VCForPython27.msi \
