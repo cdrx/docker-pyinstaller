@@ -91,6 +91,10 @@ Changed the default PyInstaller version to 3.3
 #### [1.6] - 2017-11-06
 Added Python 3.6 on Windows, thanks to @jameshilliard
 
+#### [1.7] - 2018-10-02
+Bumped Python version to 3.6 on Linux, thank you @itouch5000
+
+
 ## License
 
 MIT
