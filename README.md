@@ -10,7 +10,7 @@ Current PyInstaller version used: 3.3.
 
 The `:python2` tags run Python 2.7.
 
-The `:python3` tag runs Python 3.5 on Linux and Python 3.6 on Windows.
+The `:python3` tag runs Python 3.6 on Linux and Python 3.6 on Windows.
 
 ## Usage
 
