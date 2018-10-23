@@ -10,8 +10,9 @@ ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 COPY entrypoint.sh /entrypoint.sh
 
 RUN \
+    set -x \
     # update system
-    apt-get update \
+    && apt-get update \
     # install requirements
     && apt-get install -y --no-install-recommends \
         build-essential \
