@@ -4,10 +4,14 @@ SHELL ["/bin/bash", "-i", "-c"]
 ARG PYTHON_VERSION=3.6.6
 ARG PYINSTALLER_VERSION=3.4
 
+ENV PYPI_URL=https://pypi.python.org/
+ENV PYPI_INDEX_URL=https://pypi.python.org/simple
+
 COPY entrypoint.sh /entrypoint.sh
 
-# update system
-RUN apt-get update \
+RUN \
+    # update system
+    apt-get update \
     # install requirements
     && apt-get install -y --no-install-recommends \
         build-essential \
