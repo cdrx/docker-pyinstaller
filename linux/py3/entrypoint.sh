@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 
 # Fail on errors.
 set -e

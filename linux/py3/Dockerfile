@@ -1,29 +1,46 @@
-FROM ubuntu:18.04
+FROM ubuntu:12.04
+SHELL ["/bin/bash", "-i", "-c"]
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG PYTHON_VERSION=3.6.6
+ARG PYINSTALLER_VERSION=3.4
 
-ARG PYINSTALLER_VERSION=3.3
-
-# install python
-RUN set -x \
-    && apt-get update -qy \
-    && apt-get install --no-install-recommends -qfy python3 python3-dev python3-pip python3-setuptools python3-wheel build-essential libmysqlclient-dev git \
-    && apt-get clean
-
-# PYPI repository location
 ENV PYPI_URL=https://pypi.python.org/
-# PYPI index location
 ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 
-# install pyinstaller
-RUN pip3 install pyinstaller==$PYINSTALLER_VERSION
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
+COPY entrypoint.sh /entrypoint.sh
 
-RUN mkdir /src/
+RUN \
+    set -x \
+    # update system
+    && apt-get update \
+    # install requirements
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        curl \
+        git \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        libssl-dev \
+        zlib1g-dev \
+    # install pyenv
+    && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
+    && echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
+    && source ~/.bashrc \
+    && curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
+    && echo 'eval "$(pyenv init -)"' >> ~/.bashrc \
+    && source ~/.bashrc \
+    # install python
+    && PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install $PYTHON_VERSION \
+    && pyenv global $PYTHON_VERSION \
+    && pip install --upgrade pip \
+    # install pyinstaller
+    && pip install pyinstaller==$PYINSTALLER_VERSION \
+    && mkdir /src/ \
+    && chmod +x /entrypoint.sh
+
 VOLUME /src/
 WORKDIR /src/
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
