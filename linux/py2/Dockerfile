@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG PYINSTALLER_VERSION=3.3
+ARG PYINSTALLER_VERSION=3.4
 
 # install python
 RUN set -x \
