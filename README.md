@@ -48,7 +48,7 @@ Replace `wget` with the dependencies / package(s) you need to install.
 
 ##### How do I generate a .spec file?
 
-`docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux pyinstaller your-script.py`
+`docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller your-script.py"`
 
 will generate a `spec` file for `your-script.py` in your current working directory. See the PyInstaller docs for more information.
 
