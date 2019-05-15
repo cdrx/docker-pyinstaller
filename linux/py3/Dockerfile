@@ -6,6 +6,7 @@ ARG PYINSTALLER_VERSION=3.4
 
 ENV PYPI_URL=https://pypi.python.org/
 ENV PYPI_INDEX_URL=https://pypi.python.org/simple
+ENV PYENV_VERSION=${PYTHON_VERSION}
 
 COPY entrypoint.sh /entrypoint.sh
 
