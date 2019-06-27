@@ -1,35 +1,35 @@
 #!/bin/bash
 
 function usage() {
-    echo "Function: Put files or directories in trashcan."
-    echo "Usage: trash [OPTION]... FILE..."
+    echo "Function: Create a one-file bundled executable By Python3."
+    echo "Usage: $(basename $0) [OPTION]... FILE..."
     echo "Options:"
     echo "    -h | -help        Show the help mesage"
-    echo "    -t | -trash       Move contents to trashcan"
+    echo "    -e                Only Set Env"
+    echo "    -r                Only Run Docker"
+    exit 1
 }
 
-if [[ $1 == '' ]]; then
-    echo "没有指定工作目录，默认对当前目录进行操作"
-    SOURCE=$(pwd)
-else
-    SOURCE=$1
-fi
-
-OLDPWD=$(pwd)
-SOURCEPATH=$SOURCE
-cd $SOURCE 2>/dev/null
-if [[ $? != 0 ]]; then
-    SOURCEPATH=$(dirname $SOURCE)
-    cd $SOURCEPATH
-fi
+function workDir() {
+    cd "$SOURCEPATH" 2>/dev/null
+    if [[ $? -ne 0 ]]; then
+        SOURCEPATH=$(dirname $SOURCE)
+        cd "$SOURCEPATH" || (
+            echo "$SOURCEPATH 目录不能访问，请检查该目录是否存在或权限配置正确"
+            exit 1
+        )
+    fi
+    echo "DEBUG: 当前所在的工作目录为：$(pwd)"
+}
 
 function setEnv() {
     # 部署环境准备
     if [[ ! $(command -v pipreqs) ]]; then
         pip install pipreqs
     fi
-    rm -f requirements.txt
-    pipreqs ./
+    if [[ ! -f requirements.txt ]]; then
+        pipreqs ./
+    fi
 
     pyi-makespec --onefile ./*.py
 
@@ -51,35 +51,60 @@ function runDocker() {
     docker run --rm -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller --clean -y --dist ./dist/linux --workpath /tmp $args *.spec; chown -R --reference=. ./dist ./__pycache__"
 
     # 返回原始位置，并显示提示信息
-    cd "$OLDPWD" || exit 1
     echo "CentOS 5 版本编译后的程序在: $SOURCEPATH/dist/CentOS5"
     echo "CentOS 6 版本编译后的程序在: $SOURCEPATH/dist/CentOS6"
     echo "其他更高的 Linux 版本编译后的程序在: $SOURCEPATH/dist/linux"
 }
 
+function reDir() {
+    cd "$OLDPWD" || exit 1
+}
+
+OLDPWD=$(pwd)
+envFlag=0
+runFlag=0
+
 if [ $# -ge 1 ]; then
-    declare param=()
-    param_circle=0
     for i in "$@"; do
-        param[param_circle]=$i
-        param_circle=$(($param_circle + 1))
+        case "$i" in
+        -h)
+            usage
+            ;;
+        -e)
+            envFlag=1
+            ;;
+        -r)
+            runFlag=1
+            ;;
+        *)
+            if [[ -f "$i" || -d "$i" ]]; then
+                SOURCE="$i"
+            else
+                echo "$i is not an option"
+                usage
+            fi
+            ;;
+        esac
     done
-    unset param[0]
-    case "$1" in
-    -h)
-        usage
-        ;;
-    -e)
-        setEnv
-        ;;
-    -r)
-        runDocker
-        ;;
-    *)
-        echo "$1 is not an option"
-        usage
-        ;;
-    esac
 else
-    usage
+    # usage
+    echo "没有指定工作目录，默认对当前目录进行操作"
+    SOURCE=$(pwd)
+    envFlag=1
+    runFlag=1
 fi
+
+if [[ "$SOURCE" == "" ]]; then
+    echo "没有指定工作目录或文件，请指定工作目录或文件"
+    exit 1
+else
+    SOURCEPATH="$SOURCE"
+    workDir
+fi
+if [[ $envFlag -eq 1 ]]; then
+    setEnv
+fi
+if [[ $runFlag -eq 1 ]]; then
+    runDocker
+fi
+reDir
