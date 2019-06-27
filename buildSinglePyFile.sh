@@ -19,7 +19,6 @@ function workDir() {
             exit 1
         )
     fi
-    echo "DEBUG: 当前所在的工作目录为：$(pwd)"
 }
 
 function setEnv() {
@@ -46,14 +45,15 @@ function setEnv() {
 
 function runDocker() {
     # 生成打包文件
-    docker run --rm -v "$(pwd):/src/" zyxa/pyinstaller-centos6 "pyinstaller --clean -y --dist ./dist/CentOS6 --workpath /tmp $args *.spec; chown -R --reference=. ./dist ./__pycache__"
-    docker run --rm -v "$(pwd):/src/" zyxa/pyinstaller-centos5 "pyinstaller --clean -y --dist ./dist/CentOS5 --workpath /tmp $args *.spec; chown -R --reference=. ./dist ./__pycache__"
-    docker run --rm -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller --clean -y --dist ./dist/linux --workpath /tmp $args *.spec; chown -R --reference=. ./dist ./__pycache__"
+    docker run --rm -v "$(pwd):/src/" zyxa/pyinstaller-centos6 "pyinstaller --clean -y --dist ./dist/CentOS6 --workpath /tmp $param *.spec; chown -R --reference=. ./dist ./__pycache__" | tee "$log2" &
+    docker run --rm -v "$(pwd):/src/" zyxa/pyinstaller-centos5 "pyinstaller --clean -y --dist ./dist/CentOS5 --workpath /tmp $param *.spec; chown -R --reference=. ./dist ./__pycache__" | tee "$log1" &
+    docker run --rm -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller --clean -y --dist ./dist/linux --workpath /tmp $param *.spec; chown -R --reference=. ./dist ./__pycache__" | tee "$log3" &
+    wait
 
     # 返回原始位置，并显示提示信息
-    echo "INFO: CentOS 5 版本编译后的程序在: $SOURCEPATH/dist/CentOS5"
-    echo "INFO: CentOS 6 版本编译后的程序在: $SOURCEPATH/dist/CentOS6"
-    echo "INFO: 其他更高的 Linux 版本编译后的程序在: $SOURCEPATH/dist/linux"
+    echo "INFO: ${projectName} 项目的 CentOS 5 版本编译后的程序在: $SOURCEPATH/dist/CentOS5" | tee "$log1"
+    echo "INFO: ${projectName} 项目的 CentOS 6 版本编译后的程序在: $SOURCEPATH/dist/CentOS6" | tee "$log2"
+    echo "INFO: ${projectName} 项目的 其他更高的 Linux 版本编译后的程序在: $SOURCEPATH/dist/linux" | tee "$log3"
 }
 
 function reDir() {
@@ -102,13 +102,21 @@ if [[ ${#SOURCE_LIST[@]} -lt 1 ]]; then
     exit 1
 fi
 for SOURCE in "${SOURCE_LIST[@]}"; do
-    SOURCEPATH="$SOURCE"
-    workDir
-    if [[ $envFlag -eq 1 ]]; then
-        setEnv
-    fi
-    if [[ $runFlag -eq 1 ]]; then
-        runDocker
-    fi
+    {
+        SOURCEPATH="$SOURCE"
+        workDir
+        projectName=$(basename "$(pwd)")
+        log1="${projectName}.centos5.log"
+        log2="${projectName}.centos6.log"
+        log3="${projectName}.linux.log"
+        echo "DEBUG: 当前所在的工作目录为：$(pwd)" | tee "$log1" "$log2" "$log3"
+        if [[ $envFlag -eq 1 ]]; then
+            setEnv | tee "$log1" "$log2" "$log3"
+        fi
+        if [[ $runFlag -eq 1 ]]; then
+            runDocker
+        fi
+    } &
 done
+wait
 reDir
