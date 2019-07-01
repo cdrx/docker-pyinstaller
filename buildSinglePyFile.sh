@@ -75,6 +75,7 @@ function commandCheck() {
         echo -e "ERROR: Ubuntu/Debian:\tsudo apt-get install -y bc"
         forceExit
     fi
+
     if ! systemctl status docker.service &>/dev/null; then
         echo "ERROR: 请启动 docker 服务，或安装 docker 服务。启动参考命令："
         echo -e "ERROR: \tsudo systemctl start docker.service"
