@@ -63,6 +63,11 @@ function forceExit() {
     exit 1
 }
 
+function retExit() {
+    rm -f "$tmpf"
+    exit 0
+}
+
 function commandCheck() {
     if ! command -v bc; then
         echo "ERROR: 请安装 bc 服务。安装参考命令："
@@ -84,7 +89,7 @@ runFlag=0
 
 # Thread control
 cpuNum=$(grep -c processor /proc/cpuinfo)
-threadNum=$(echo "($cpuNum - 1) / 3 * 3" | bc)
+threadNum=$(echo "($cpuNum - 1) / 3" | bc)
 if [[ threadNum -eq 0 ]]; then
     threadNum=1
 fi
@@ -143,6 +148,7 @@ if [[ ${#SOURCE_LIST[@]} -lt 1 ]]; then
     forceExit
 fi
 for SOURCE in "${SOURCE_LIST[@]}"; do
+    read -u 9
     {
         SOURCEPATH="$SOURCE"
         workDir
@@ -157,7 +163,9 @@ for SOURCE in "${SOURCE_LIST[@]}"; do
         if [[ $runFlag -eq 1 ]]; then
             runDocker
         fi
+        echo -ne '\n' 1>&9
     } &
 done
 wait
 reDir
+retExit
