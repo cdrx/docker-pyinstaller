@@ -81,6 +81,11 @@ function commandCheck() {
         echo -e "ERROR: \tsudo systemctl start docker.service"
         forceExit
     fi
+
+    if ! docker ps &>/dev/null; then
+        echo "ERROR: 请使用 docker 组的用户，或 root 用户身份运行本程序"
+        forceExit
+    fi
 }
 
 commandCheck
