@@ -1,5 +1,18 @@
 #!/bin/bash
 
+###############################################################################
+# version: v1.1
+# author: Zyx-A
+# license: Apache Licence
+# contact: 448031904@qq.com
+# site: http://laiyx.cc
+# file: buildSinglePyFile
+# time: 2019-07-01 17:57
+# description:  一键自动对 Python 脚本打包
+#               打包环境基于 Python 3.6.8
+#               运行环境基于 ≥ glibc2.5 , ≥ glibc2.12 , ≥ glibc2.14
+###############################################################################
+
 function usage() {
     echo "Function: Create a one-file bundled executable By Python3."
     echo "Usage: $(basename "$0") [OPTION]... FILE..."
