@@ -11,8 +11,7 @@ function usage() {
 }
 
 function workDir() {
-    cd "$SOURCEPATH" 2>/dev/null
-    if [[ $? -ne 0 ]]; then
+    if ! cd "$SOURCEPATH" 2>/dev/null; then
         SOURCEPATH=$(dirname "$SOURCE")
         cd "$SOURCEPATH" || (
             echo "ERROR: $SOURCEPATH 目录不能访问，请检查该目录是否存在或权限配置正确"
@@ -23,7 +22,7 @@ function workDir() {
 
 function setEnv() {
     # 部署环境准备
-    if [[ ! $(command -v pipreqs) ]]; then
+    if ! command -v pipreqs; then
         pip install pipreqs
     fi
     if [[ ! -f requirements.txt ]]; then
@@ -33,8 +32,7 @@ function setEnv() {
     pyi-makespec --onefile ./*.py
 
     # 打包报错优化
-    grep ^aliyun_python_sdk_core requirements.txt &>/dev/null
-    if [[ $? -eq 0 ]]; then
+    if grep ^aliyun_python_sdk_core requirements.txt &>/dev/null; then
         num=$(grep -nE "^\s*datas=\[" ./*.spec | awk -F: '{print $1}')
         echo "WARN: 请将 XXX.spec 文件中的第 $num 行：【 datas=[], 】修改为："
         echo -e "WARN: \tdatas=[('/root/.pyenv/versions/3.6.8/lib/python3.6/site-packages/aliyunsdkcore/data/','aliyunsdkcore/data/')],"
@@ -66,13 +64,13 @@ function forceExit() {
 }
 
 function commandCheck() {
-    if [[ ! $(command -v bc) ]]; then
+    if ! command -v bc; then
         echo "请安装 bc 服务。安装参考命令："
         echo -e "CentOS/RedHat:\tsudo yum install -y bc"
         echo -e "Ubuntu/Debian:\tsudo apt-get install -y bc"
         forceExit
     fi
-    if [[ ! $(systemctl status docker.service &>/dev/null) ]]; then
+    if ! systemctl status docker.service &>/dev/null; then
         echo "请启动 docker 服务，或安装 docker 服务。启动参考命令："
         echo -e "\tsudo systemctl start docker.service"
         forceExit
@@ -115,7 +113,7 @@ if [ $# -ge 1 ]; then
         *)
             if [[ -f "$i" || -d "$i" ]]; then
                 SOURCE_LIST[SOURCE_circle]="$i"
-                SOURCE_circle=$(($SOURCE_circle + 1))
+                SOURCE_circle=$((SOURCE_circle + 1))
             else
                 echo "$i is not an option"
                 usage
