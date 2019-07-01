@@ -65,14 +65,14 @@ function forceExit() {
 
 function commandCheck() {
     if ! command -v bc; then
-        echo "请安装 bc 服务。安装参考命令："
-        echo -e "CentOS/RedHat:\tsudo yum install -y bc"
-        echo -e "Ubuntu/Debian:\tsudo apt-get install -y bc"
+        echo "ERROR: 请安装 bc 服务。安装参考命令："
+        echo -e "ERROR: CentOS/RedHat:\tsudo yum install -y bc"
+        echo -e "ERROR: Ubuntu/Debian:\tsudo apt-get install -y bc"
         forceExit
     fi
     if ! systemctl status docker.service &>/dev/null; then
-        echo "请启动 docker 服务，或安装 docker 服务。启动参考命令："
-        echo -e "\tsudo systemctl start docker.service"
+        echo "ERROR: 请启动 docker 服务，或安装 docker 服务。启动参考命令："
+        echo -e "ERROR: \tsudo systemctl start docker.service"
         forceExit
     fi
 }
