@@ -29,7 +29,7 @@ function setEnv() {
         pipreqs ./
     fi
 
-    pyi-makespec --onefile ./*.py
+    pyi-makespec --onefile "$param" ./*.py
 
     # 打包报错优化
     if grep ^aliyun_python_sdk_core requirements.txt &>/dev/null; then
@@ -99,8 +99,9 @@ done
 if [ $# -ge 1 ]; then
     declare SOURCE_LIST=()
     SOURCE_circle=0
-    for i in "$@"; do
-        case "$i" in
+    SOURCE=("$@")
+    for ((i = 0; i < ${#SOURCE[@]}; i++)); do
+        case "${SOURCE[i]}" in
         -h)
             usage
             ;;
@@ -111,11 +112,19 @@ if [ $# -ge 1 ]; then
             runFlag=1
             ;;
         *)
-            if [[ -f "$i" || -d "$i" ]]; then
-                SOURCE_LIST[SOURCE_circle]="$i"
+            if [[ -f "${SOURCE[i]}" || -d "${SOURCE[i]}" ]]; then
+                SOURCE_LIST[SOURCE_circle]="${SOURCE[i]}"
                 SOURCE_circle=$((SOURCE_circle + 1))
+            elif pyinstaller --help | grep -w "^\s*${SOURCE[i]}" &>/dev/null; then
+                # 判断若为 pyinstaller 命令的参数，则加入到自定义参数中去。
+                param=${param}" "${SOURCE[i]}
+                if pyinstaller --help | grep -wE "^\s*${SOURCE[i]} \S+" &>/dev/null; then
+                    # 如果下一个参数是上一个参数的值，则进行追加
+                    param=${param}" "${SOURCE[i + 1]}
+                    i=$((i + 1))
+                fi
             else
-                echo "$i is not an option"
+                echo "${SOURCE[i]} is not an option"
                 usage
             fi
             ;;
