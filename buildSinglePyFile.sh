@@ -7,16 +7,16 @@ function usage() {
     echo "    -h | -help        Show the help mesage"
     echo "    -e                Only Set Env"
     echo "    -r                Only Run Docker"
-    exit 1
+    forceExit
 }
 
 function workDir() {
     cd "$SOURCEPATH" 2>/dev/null
     if [[ $? -ne 0 ]]; then
-        SOURCEPATH=$(dirname $SOURCE)
+        SOURCEPATH=$(dirname "$SOURCE")
         cd "$SOURCEPATH" || (
             echo "ERROR: $SOURCEPATH 目录不能访问，请检查该目录是否存在或权限配置正确"
-            exit 1
+            forceExit
         )
     fi
 }
@@ -39,7 +39,7 @@ function setEnv() {
         echo "WARN: 请将 XXX.spec 文件中的第 $num 行：【 datas=[], 】修改为："
         echo -e "WARN: \tdatas=[('/root/.pyenv/versions/3.6.8/lib/python3.6/site-packages/aliyunsdkcore/data/','aliyunsdkcore/data/')],"
         echo "WARN: 参考资料：https://blog.csdn.net/Huay_Li/article/details/89439837"
-        exit 1
+        forceExit
     fi
 }
 
@@ -57,12 +57,46 @@ function runDocker() {
 }
 
 function reDir() {
-    cd "$OLDPWD" || exit 1
+    cd "$OLDPWD" || forceExit
 }
 
+function forceExit() {
+    rm -f "$tmpf"
+    exit 1
+}
+
+function commandCheck() {
+    if [[ ! $(command -v bc) ]]; then
+        echo "请安装 bc 服务。安装参考命令："
+        echo -e "CentOS/RedHat:\tsudo yum install -y bc"
+        echo -e "Ubuntu/Debian:\tsudo apt-get install -y bc"
+        forceExit
+    fi
+    if [[ ! $(systemctl status docker.service &>/dev/null) ]]; then
+        echo "请启动 docker 服务，或安装 docker 服务。启动参考命令："
+        echo -e "\tsudo systemctl start docker.service"
+        forceExit
+    fi
+}
+
+commandCheck
 OLDPWD=$(pwd)
 envFlag=0
 runFlag=0
+
+# Thread control
+cpuNum=$(grep -c processor /proc/cpuinfo)
+threadNum=$(echo "($cpuNum - 1) / 3 * 3" | bc)
+if [[ threadNum -eq 0 ]]; then
+    threadNum=1
+fi
+
+tmpf=/dev/shm/tmp.fifo
+mkfifo $tmpf
+exec 9<>$tmpf
+for ((i = 0; i < threadNum; i++)); do
+    echo -ne "\n" 1>&9
+done
 
 if [ $# -ge 1 ]; then
     declare SOURCE_LIST=()
@@ -99,7 +133,7 @@ fi
 
 if [[ ${#SOURCE_LIST[@]} -lt 1 ]]; then
     echo "ERROR: 没有指定工作目录或文件，请指定工作目录或文件"
-    exit 1
+    forceExit
 fi
 for SOURCE in "${SOURCE_LIST[@]}"; do
     {
