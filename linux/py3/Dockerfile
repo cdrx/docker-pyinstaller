@@ -25,6 +25,8 @@ RUN \
         libsqlite3-dev \
         libssl-dev \
         zlib1g-dev \
+        #upx
+        upx \
     # install pyenv
     && echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
     && echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
