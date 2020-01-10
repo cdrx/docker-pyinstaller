@@ -25,6 +25,10 @@ RUN \
         libsqlite3-dev \
         libssl-dev \
         zlib1g-dev \
+        #optional libraries
+        libgdbm-dev \
+        libgdbm3 \
+        uuid-dev \
         #upx
         upx \
     # install pyenv
