@@ -19,6 +19,7 @@ RUN \
         build-essential \
         ca-certificates \
         curl \
+        wget \
         git \
         libbz2-dev \
         libreadline-dev \
