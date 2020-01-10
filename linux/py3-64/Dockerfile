@@ -26,6 +26,7 @@ RUN \
         libsqlite3-dev \
         libssl-dev \
         zlib1g-dev \
+        libffi-dev \
         #optional libraries
         libgdbm-dev \
         libgdbm3 \
