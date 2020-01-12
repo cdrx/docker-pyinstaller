@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM amd64/ubuntu:12.04
 SHELL ["/bin/bash", "-i", "-c"]
 
 ARG PYTHON_VERSION=3.7.5
