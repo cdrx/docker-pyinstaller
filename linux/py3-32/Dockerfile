@@ -1,4 +1,4 @@
-FROM amd64/ubuntu:12.04
+FROM i386/ubuntu:12.04
 SHELL ["/bin/bash", "-i", "-c"]
 
 ARG PYTHON_VERSION=3.7.5
@@ -40,7 +40,7 @@ RUN \
     && wget https://www.openssl.org/source/openssl-1.0.2u.tar.gz \
     && tar -xzvf openssl-1.0.2u.tar.gz \
     && cd openssl-1.0.2u \
-    && ./config --prefix=$HOME/openssl --openssldir=$HOME/openssl shared zlib \
+    && ./Configure linux-generic32 --prefix=$HOME/openssl --openssldir=$HOME/openssl shared zlib \
     && make \
     && make install \
     # install pyenv
