@@ -23,7 +23,7 @@ RUN mkdir /src/
 VOLUME /src/
 WORKDIR /src/
 
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint-linux.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
