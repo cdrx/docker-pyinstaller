@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ARG WINE_VERSION=winehq-staging
 ARG PYTHON_VERSION=3.7.5
-ARG PYINSTALLER_VERSION=3.5
+ARG PYINSTALLER_VERSION=3.6
 
 # we need wine for this all to work, so we'll use the PPA
 RUN set -x \
@@ -69,13 +69,14 @@ RUN set -x \
     && rename 's/_/\-/g' *.dll \
     && cp "$W_TMP"/*.dll "$W_SYSTEM_DLLS"/
 
+# install pyinstaller
+RUN /usr/bin/pip install pyinstaller==$PYINSTALLER_VERSION
+
 # put the src folder inside wine
 RUN mkdir /src/ && ln -s /src /wine/drive_c/src
 VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
-
-RUN pip install pyinstaller==$PYINSTALLER_VERSION
 
 COPY entrypoint-windows.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

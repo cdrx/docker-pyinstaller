@@ -2,7 +2,7 @@
 
 **cdrx/pyinstaller-linux** and **cdrx/pyinstaller-windows** are a pair of Docker containers to ease compiling Python applications to binaries / exe files.
 
-Current PyInstaller version used: 3.5.
+Current PyInstaller version used: 3.6.
 
 ## Tags
 
@@ -10,7 +10,7 @@ Current PyInstaller version used: 3.5.
 
 The `:python2` tags run Python 2.7.
 
-The `:python3` tag runs Python 3.7 on Linux and Python 3.7 on Windows.
+The `:python3` tag runs Python 3.7.
 
 ## Usage
 
@@ -97,6 +97,11 @@ Bumped Python version to 3.6 on Linux, thank you @itouch5000
 #### [1.8] - 2019-01-15
 Build using an older version of glibc to improve compatibility, thank you @itouch5000
 Updated PyInstaller to version 3.4
+
+#### [1.9] - 2020-01-14
+Added a 32bit package, thank you @danielguardicore
+Updated PyInstaller to version 3.6
+
 
 ## License
 
