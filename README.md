@@ -36,6 +36,13 @@ docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux
 
 will build your PyInstaller project into `dist/linux/`. The binary will have the same name as your `.spec` file.
 
+### Use with GitHub Actions
+
+If you wish to easily integrate these containers into your CI workflow on GitHub, there is currently 2 GitHub Actions for use:
+
+- Windows - <https://github.com/marketplace/actions/pyinstaller-windows>
+- Linux - <https://github.com/marketplace/actions/pyinstaller-linux>
+
 ##### How do I install system libraries or dependencies that my Python packages need?
 
 You'll need to supply a custom command to Docker to install system pacakges. Something like:
