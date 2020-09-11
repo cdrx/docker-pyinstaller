@@ -31,9 +31,9 @@ fi
 
 cd $WORKDIR
 
-if [ -f requirements.txt ]; then
+if [ -f requirements.txt ] && [ -z "$DISABLE_REQUIREMENTS" ]; then
     pip install -r requirements.txt
-fi # [ -f requirements.txt ]
+fi
 
 echo "$@"
 
