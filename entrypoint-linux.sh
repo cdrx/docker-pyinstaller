@@ -38,7 +38,11 @@ fi # [ -f requirements.txt ]
 echo "$@"
 
 if [[ "$@" == "" ]]; then
-    pyinstaller --clean -y --dist ./dist/linux --workpath /tmp *.spec
+    SPECS=($(ls *.spec))
+    for NEXT in ${SPECS[@]}; do
+        echo "Located pyinstaller spec file: $NEXT"
+        pyinstaller --clean -y --dist ./dist/linux --workpath /tmp $NEXT
+    done
     chown -R --reference=. ./dist/linux
 else
     sh -c "$@"

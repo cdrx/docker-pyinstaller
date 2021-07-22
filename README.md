@@ -52,6 +52,14 @@ Replace `wget` with the dependencies / package(s) you need to install.
 
 will generate a `spec` file for `your-script.py` in your current working directory. See the PyInstaller docs for more information.
 
+##### How do I specify one of many preexisting .spec files?
+
+If you have multiple `spec` files in your source directory, you might want to specify which one to use.
+
+`docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller --clean -y --dist ./dist/linux --workpath /tmp your-spec.spec && chown -R --reference=. ./dist/linux"`
+
+will generate a binary for `your-spec.spec` only.
+
 ##### How do I change the PyInstaller version used?
 
 Add `pyinstaller=3.1.1` to your `requirements.txt`.
