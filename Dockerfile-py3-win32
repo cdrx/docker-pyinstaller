@@ -69,7 +69,7 @@ RUN set -x \
     && rm -f "$W_TMP"/* \
     && wget -P "$W_TMP" https://aka.ms/vs/16/release/vc_redist.x86.exe \
     # https://download.visualstudio.microsoft.com/download/pr/221ed2ae-1269-497b-a962-e113045001fa/1ACD8D5EA1CDC3EB2EB4C87BE3AB28722D0825C15449E5C9CEEF95D897DE52FA/VC_redist.x86.exe
-    && cabextract -q --directory="$W_TMP" "$W_TMP"/VC_redist.x86.exe \
+    && cabextract -q --directory="$W_TMP" "$W_TMP"/vc_redist.x86.exe \
     && cabextract -q --directory="$W_TMP" "$W_TMP/a10" \
     && cabextract -q --directory="$W_TMP" "$W_TMP/a11" \
     && cd "$W_TMP" \
