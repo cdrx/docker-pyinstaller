@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 ARG PYTHON_VERSION=3.9.6
 ARG PYINSTALLER_VERSION=4.2
@@ -33,7 +33,9 @@ RUN \
         openssl \
         #optional libraries
         libgdbm-dev \
-        libgdbm6 \
+        # libgdbm5 for ubuntu 18.04
+        # libgdbm6 for ubuntu 20.04
+        libgdbm5 \
         uuid-dev \
         #upx
         upx \
